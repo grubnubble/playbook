@@ -2,11 +2,7 @@
 
 module Playbook
   module PbLineGraph
-    class LineGraph
-      include Playbook::Props
-
-      partial "pb_line_graph/line_graph"
-
+    class LineGraph < Playbook::KitBase
       prop :axis_title
       prop :chart_data, type: Playbook::Props::Array,
                         default: []
@@ -24,6 +20,8 @@ module Playbook
       prop :toggle_legend_click, type: Playbook::Props::Boolean,
                                  default: true
       prop :height
+      prop :colors, type: Playbook::Props::Array,
+                    default: []
 
       def chart_type
         gradient ? "area" : "line"
@@ -34,6 +32,7 @@ module Playbook
           id: id,
           className: classname,
           chartData: chart_data,
+          dark: dark ? "dark" : "",
           type: chart_type,
           title: title,
           subtitle: subtitle,
@@ -45,6 +44,7 @@ module Playbook
           legend: legend,
           toggleLegendClick: toggle_legend_click,
           height: height,
+          colors: colors,
         }
       end
 

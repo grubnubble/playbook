@@ -1,5 +1,6 @@
 import React from 'react'
-import { DashboardValue } from '../../'
+
+import DashboardValue from '../../pb_dashboard_value/_dashboard_value'
 
 const DashboardValueDefault = (props) => {
   return (
@@ -28,6 +29,15 @@ const DashboardValueDefault = (props) => {
           statChange={{ value: 86 }}
           statLabel="Neutral Value"
           statValue={{ value: '261', unit: 'windows' }}
+          {...props}
+      />
+
+      <br />
+      <br />
+
+      <DashboardValue
+          statLabel="Pitch Rate"
+          statValue={{ value: '90.9', unit: '%' }}
           {...props}
       />
     </div>

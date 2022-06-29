@@ -2,10 +2,14 @@
 
 import React, { useEffect } from 'react'
 import classnames from 'classnames'
+
 import { buildAriaProps, buildCss, buildDataProps } from '../utilities/props'
-import { globalProps } from '../utilities/globalProps.js'
-import { Icon, TextInput } from '../'
-import datePickerHelper from './date_picker_helper.js'
+import { deprecatedProps, globalProps } from '../utilities/globalProps'
+
+import datePickerHelper from './date_picker_helper'
+
+import Icon from '../pb_icon/_icon'
+import TextInput from '../pb_text_input/_text_input'
 
 type DatePickerProps = {
   allowInput?: Boolean,
@@ -18,13 +22,17 @@ type DatePickerProps = {
   disableInput?: Boolean,
   disableRange?: Array,
   disableWeekdays?: Array,
+  enableTime?: Boolean,
   error?: String,
   format?: String,
   hideIcon?: Boolean,
   hideLabel?: Boolean,
   id?: String,
+  inLine?: Boolean,
   inputAria?: object,
   inputData?: object,
+  inputOnChange?: (String) => void,
+  inputValue?: any,
   label?: String,
   maxDate: String,
   minDate: String,
@@ -33,10 +41,16 @@ type DatePickerProps = {
   onChange: (String) => void,
   pickerId?: String,
   placeholder?: String,
+  plugins: Boolean,
+  selectionType?: "month" | "week",
+  showTimezone?: Boolean,
+  timeFormat?: String,
   type?: String,
   yearRange?: Array,
 }
 const DatePicker = (props: DatePickerProps) => {
+  if (props.plugins) deprecatedProps('Date Picker', ['plugins'])
+
   const {
     allowInput = false,
     aria = {},
@@ -48,13 +62,17 @@ const DatePicker = (props: DatePickerProps) => {
     disableInput,
     disableRange = null,
     disableWeekdays = null,
+    enableTime = false,
     error,
     format = 'm/d/Y',
     hideIcon = false,
     hideLabel = false,
     id,
+    inLine = true,
     inputAria,
     inputData,
+    inputOnChange,
+    inputValue,
     label = 'Date Picker',
     maxDate,
     minDate,
@@ -63,6 +81,9 @@ const DatePicker = (props: DatePickerProps) => {
     onChange = () => {},
     pickerId,
     placeholder = 'Select Date',
+    plugins = false,
+    selectionType = '',
+    showTimezone = false,
     yearRange = [ 1900, 2100 ],
   } = props
 
@@ -77,21 +98,26 @@ const DatePicker = (props: DatePickerProps) => {
 
   useEffect(() => {
     datePickerHelper({
-      allowInput: allowInput,
-      defaultDate: defaultDate,
-      disableDate: disableDate,
-      disableRange: disableRange,
-      disableWeekdays: disableWeekdays,
-      format: format,
-      hideIcon: hideIcon,
-      maxDate: maxDate,
-      minDate: minDate,
-      mode: mode,
-      onChange: onChange,
-      pickerId: pickerId,
-      yearRange: yearRange,
+      allowInput,
+      defaultDate,
+      disableDate,
+      disableRange,
+      disableWeekdays,
+      enableTime,
+      format,
+      hideIcon,
+      inLine,
+      maxDate,
+      minDate,
+      mode,
+      onChange,
+      pickerId,
+      plugins,
+      selectionType,
+      showTimezone,
+      yearRange,
     })
-  }, [])
+  })
 
   const iconWrapperClass = () => {
     let base = 'cal_icon_wrapper'
@@ -114,7 +140,6 @@ const DatePicker = (props: DatePickerProps) => {
         className={classes}
         id={id}
     >
-      {className}
       <div className="input_wrapper">
         <TextInput
             aria={inputAria}
@@ -126,8 +151,11 @@ const DatePicker = (props: DatePickerProps) => {
             id={pickerId}
             label={hideLabel ? null : label}
             name={name}
+            onChange={inputOnChange}
             placeholder={placeholder}
+            value={inputValue}
         />
+
         <If condition={!hideIcon}>
           <div
               className={iconWrapperClass()}
@@ -139,6 +167,28 @@ const DatePicker = (props: DatePickerProps) => {
             />
           </div>
         </If>
+
+        <If condition={hideIcon && inLine}>
+          <div
+              className={iconWrapperClass()}
+              id={`${pickerId}-icon-plus`}
+          >
+            <Icon
+                className="date-picker-plus-icon"
+                icon="plus"
+            />
+          </div>
+          <div
+              className={iconWrapperClass()}
+              id={`${pickerId}-angle-down`}
+          >
+            <Icon
+                className="angle_down_icon"
+                icon="angle-down"
+            />
+          </div>
+        </If>
+
       </div>
     </div>
   )

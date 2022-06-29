@@ -2,13 +2,18 @@
 
 module Playbook
   module PbFormGroup
-    class FormGroup
-      include Playbook::Props
-
-      partial "pb_form_group/form_group"
+    class FormGroup < Playbook::KitBase
+      prop :full_width, type: Playbook::Props::Boolean,
+                        default: false
 
       def classname
-        generate_classname("pb_form_group_kit")
+        generate_classname("pb_form_group_kit", full_width_class)
+      end
+
+    private
+
+      def full_width_class
+        full_width ? "full" : nil
       end
     end
   end

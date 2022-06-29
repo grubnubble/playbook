@@ -1,0 +1,10 @@
+inherit_from: ../.rubocop.yml
+
+require: 
+  - rubocop-performance
+
+AllCops:
+  Exclude:
+    - "bin/*"
+    - "node_modules/**/*"
+    - "vendor/**/*"

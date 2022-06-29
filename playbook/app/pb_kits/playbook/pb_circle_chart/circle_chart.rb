@@ -1,46 +1,44 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/HashLikeCase
+
 module Playbook
   module PbCircleChart
-    class CircleChart
-      include Playbook::Props
-
-      partial "pb_circle_chart/circle_chart"
-
+    class CircleChart < Playbook::KitBase
       prop :chart_data, type: Playbook::Props::Array,
                         default: []
       prop :style, type: Playbook::Props::Enum,
-                         values: %w[pie],
-                         default: "pie"
+                   values: %w[pie],
+                   default: "pie"
 
       prop :data_labels, type: Playbook::Props::Boolean, default: false
       prop :min_point_size, type: Playbook::Props::Numeric
       prop :max_point_size, type: Playbook::Props::Numeric
       prop :inner_size, type: Playbook::Props::Enum,
-                              values: %w[sm md lg none],
-                              default: "md"
+                        values: %w[sm md lg none],
+                        default: "md"
       prop :z_min, type: Playbook::Props::Numeric
       prop :start_angle, type: Playbook::Props::Numeric
       prop :header_format
-      prop :data_label_html, default: '<div>{point.name}</div>'
-      prop :tooltip_html, default: '<span style="font-weight: bold; color:{point.color};">●</span> 
+      prop :data_label_html, default: "<div>{point.name}</div>"
+      prop :tooltip_html, default: '<span style="font-weight: bold; color:{point.color};">●</span>
                                       {point.name}: ' + '<b>{point.y}
                                     </b>'
       prop :use_html, type: Playbook::Props::Boolean, default: false
       prop :legend, type: Playbook::Props::Boolean, default: false
-      prop :title, default: ''
+      prop :title, default: ""
+      prop :height
       prop :rounded, type: Playbook::Props::Boolean, default: false
       prop :colors, type: Playbook::Props::Array,
                     default: []
-
 
       def chart_type
         style == "variablepie" ? "variablepie" : "pie"
       end
 
       def chart_data_formatted
-        chart_data.map{ |hash| hash[:y] = hash.delete :value}
-        return chart_data
+        chart_data.map { |hash| hash[:y] = hash.delete :value }
+        chart_data
       end
 
       def inner_size_format
@@ -61,7 +59,7 @@ module Playbook
       end
 
       def rounded_border_color
-        rounded == true ? 'null' : nil
+        rounded == true ? "null" : nil
       end
 
       def chart_options
@@ -71,7 +69,9 @@ module Playbook
           borderColor: rounded_border_color,
           borderWidth: rounded_border_width,
           chartData: chart_data_formatted,
+          dark: dark ? "dark" : "",
           title: title,
+          height: height,
           type: chart_type,
           showInLegend: legend,
           dataLabelHtml: data_label_html,
@@ -93,3 +93,5 @@ module Playbook
     end
   end
 end
+
+# rubocop:enable Style/HashLikeCase

@@ -5,15 +5,17 @@ require_relative "../../../../app/pb_kits/playbook/pb_icon_circle/icon_circle"
 RSpec.describe Playbook::PbIconCircle::IconCircle do
   subject { Playbook::PbIconCircle::IconCircle }
 
-  it { is_expected.to define_partial }
-
   it { is_expected.to define_prop(:icon).that_is_required }
-  it { is_expected.to define_enum_prop(:size)
-                      .with_default("md")
-                      .with_values("xs", "sm", "md", "base", "lg", "xl") }
-  it { is_expected.to define_enum_prop(:variant)
-                      .with_default("default")
-                      .with_values("default", "royal", "blue", "purple", "teal", "red", "yellow", "green") }
+  it {
+    is_expected.to define_enum_prop(:size)
+      .with_default("md")
+      .with_values("xs", "sm", "md", "base", "lg", "xl")
+  }
+  it {
+    is_expected.to define_enum_prop(:variant)
+      .with_default("default")
+      .with_values("default", "royal", "blue", "orange", "purple", "teal", "red", "yellow", "green")
+  }
 
   describe "#classname" do
     it "returns namespaced class name", :aggregate_failures do
@@ -30,5 +32,3 @@ RSpec.describe Playbook::PbIconCircle::IconCircle do
     end
   end
 end
-
-

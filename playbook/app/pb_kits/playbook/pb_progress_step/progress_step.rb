@@ -2,18 +2,14 @@
 
 module Playbook
   module PbProgressStep
-    class ProgressStep
-      include Playbook::Props
-
-      partial "pb_progress_step/progress_step"
-
+    class ProgressStep < Playbook::KitBase
       prop :orientation, type: Playbook::Props::Enum,
                          values: %w[vertical horizontal],
                          default: "horizontal"
       prop :icon, type: Playbook::Props::Boolean,
                   default: false
       prop :show_icon, type: Playbook::Props::Boolean,
-                  default: false
+                       default: false
       prop :variant, type: Playbook::Props::Enum,
                      values: %w[default tracker],
                      default: "default"

@@ -2,11 +2,13 @@
 
 import React from 'react'
 import classnames from 'classnames'
-import { pbChart } from '../'
-import { globalProps } from '../utilities/globalProps.js'
+
+import { globalProps } from '../utilities/globalProps'
+import pbChart from '../plugins/pb_chart'
 
 type BarGraphProps = {
   axisTitle: string,
+  dark?: Boolean,
   xAxisCategories: array,
   yAxisMin: number,
   yAxisMax: number,
@@ -23,11 +25,13 @@ type BarGraphProps = {
   legend?: boolean,
   toggleLegendClick?: boolean,
   height?: string,
+  colors: array,
 }
 
 export default class BarGraph extends React.Component<BarGraphProps> {
   static defaultProps = {
     className: 'pb_bar_graph',
+    dark: false,
     type: 'column',
     legend: false,
     toggleLegendClick: true,
@@ -36,6 +40,7 @@ export default class BarGraph extends React.Component<BarGraphProps> {
   componentDidMount() {
     const {
       axisTitle,
+      dark,
       xAxisCategories,
       yAxisMin,
       yAxisMax,
@@ -49,11 +54,14 @@ export default class BarGraph extends React.Component<BarGraphProps> {
       legend,
       height,
       toggleLegendClick,
+      colors  = [],
     } = this.props
 
     new pbChart(`.${className}`, {
       axisTitle: axisTitle,
+      dark,
       chartData: chartData,
+      colors: colors,
       id: id,
       pointStart: pointStart,
       subtitle: subTitle,

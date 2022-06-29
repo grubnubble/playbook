@@ -2,11 +2,7 @@
 
 module Playbook
   module PbStatChange
-    class StatChange
-      include Playbook::Props
-
-      partial "pb_stat_change/stat_change"
-
+    class StatChange < Playbook::KitBase
       prop :change, type: Playbook::Props::Enum,
                     values: %w[neutral increase decrease],
                     default: "neutral"
@@ -25,18 +21,14 @@ module Playbook
       end
 
       def returned_icon
-        if icon
-          icon
-        else
-          case change
-          when "increase"
-            "arrow-up"
-          when "decrease"
-            "arrow-down"
-          else
-            false
-          end
-        end
+        icon || case change
+                when "increase"
+                  "arrow-up"
+                when "decrease"
+                  "arrow-down"
+                else
+                  false
+                end
       end
 
       def classname

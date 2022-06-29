@@ -2,10 +2,9 @@
 
 import React from 'react'
 import classnames from 'classnames'
-import { Icon } from '../'
 
 import type { InputCallback } from '../types'
-
+import { globalProps } from '../utilities/globalProps'
 import {
   buildAriaProps,
   buildCss,
@@ -13,15 +12,22 @@ import {
   noop,
 } from '../utilities/props'
 
-import { globalProps } from '../utilities/globalProps.js'
+import Icon from '../pb_icon/_icon'
+import Checkbox from '../pb_checkbox/_checkbox'
+import Card from '../pb_card/_card'
+import Flex from '../pb_flex/_flex'
+import Radio from '../pb_radio/_radio'
 
 type SelectableCardProps = {
   aria?: object,
   checked: boolean,
   children?: array<React.ReactChild>,
   className?: string,
+  customIcon?: SVGElement,
+  dark?: boolean,
   data: object,
   disabled?: boolean,
+  error?: boolean,
   icon?: boolean,
   id?: string,
   inputId?: string,
@@ -30,6 +36,7 @@ type SelectableCardProps = {
   onChange: InputCallback<HTMLInputElement>,
   text?: string,
   value?: string,
+  variant?: string,
 }
 
 const SelectableCard = ({
@@ -37,8 +44,11 @@ const SelectableCard = ({
   checked = false,
   children,
   className,
+  customIcon,
+  dark = false,
   data = {},
   disabled = false,
+  error = false,
   icon = false,
   inputId = null,
   multi = true,
@@ -46,22 +56,29 @@ const SelectableCard = ({
   onChange = noop,
   text,
   value,
+  variant = 'default',
   ...props
 }: SelectableCardProps) => {
   const ariaProps = buildAriaProps(aria)
   const dataProps = buildDataProps(data)
 
   const classes = classnames(buildCss('pb_selectable_card_kit',
-    { 'checked': checked,
+    {
+      'checked': checked,
       'disabled': disabled,
-      'enabled': !disabled }),
-  globalProps(props), className)
+      'enabled': !disabled,
+    }),
+  { error },
+  dark ? 'dark' : '',
+  className
+  )
 
   const displayIcon = () => {
     if (icon === true) {
       return (
         <div className="pb_selectable_card_circle">
           <Icon
+              customIcon={customIcon}
               fixedWidth
               icon="check"
           />
@@ -70,9 +87,16 @@ const SelectableCard = ({
     }
   }
 
-  const inputType = multi === false ? 'radio' : 'checkbox'
+  const inputRef = React.createRef()
+  // Delegate clicks to hidden input from visible one
+  const handleClick = () => {
+    inputRef.current.click()
+  }
 
+  const inputType = multi ? 'checkbox' : 'radio'
   const inputIdPresent = inputId !== null ? inputId : name
+  const Input = multi ? Checkbox : Radio
+  const labelProps = variant === 'displayInput' ? Object.assign(props, { padding: 'none' }) : props
 
   return (
     <div
@@ -87,15 +111,51 @@ const SelectableCard = ({
           id={inputIdPresent}
           name={name}
           onChange={onChange}
+          ref={inputRef}
           type={inputType}
           value={value}
       />
+
       <label
-          className={globalProps(props)}
+          className={globalProps(labelProps)}
           htmlFor={inputIdPresent}
       >
-        {text || children}
-        {displayIcon()}
+        <div className="buffer">
+          <Choose>
+            <When condition={variant === 'displayInput'}>
+              <Flex vertical="center">
+                <Flex
+                    orientation="column"
+                    padding="sm"
+                    paddingRight="xs"
+                    vertical="center"
+                >
+                  <Input dark={dark}>
+                    <input
+                        checked={checked}
+                        disabled={disabled}
+                        onClick={handleClick}
+                        readOnly
+                        type={inputType}
+                    />
+                  </Input>
+                </Flex>
+                <div className="separator" />
+                <Card.Body
+                    dark={dark}
+                    padding="sm"
+                    status={error ? 'negative' : null}
+                >
+                  {text || children}
+                </Card.Body>
+              </Flex>
+            </When>
+            <Otherwise>
+              {text || children}
+            </Otherwise>
+          </Choose>
+          {displayIcon()}
+        </div>
       </label>
     </div>
   )

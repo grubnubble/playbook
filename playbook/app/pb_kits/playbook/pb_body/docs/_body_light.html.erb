@@ -2,7 +2,6 @@
   text: "I am a body kit"
 }) %>
 
-
 <%= pb_rails("body", props: {
   text: "I am a body kit (Light)",
   color: "light"
@@ -14,11 +13,16 @@
 }) %>
 
 <%= pb_rails("body", props: {
-  text: "I am a body kit (Status: negative)",
-  status: "negative"
+  text: "I am a body kit (Link)",
+  color: "link"
 }) %>
 
 <%= pb_rails("body", props: {
-  text: "I am a body kit (Status: positive)",
-  status: "positive"
+  text: "I am a body kit (Error)",
+  color: "error"
+}) %>
+
+<%= pb_rails("body", props: {
+  text: "I am a body kit (Success)",
+  color: "success"
 }) %>

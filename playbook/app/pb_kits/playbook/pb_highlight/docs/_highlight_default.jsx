@@ -1,5 +1,7 @@
 import React from 'react'
-import { Body, Highlight } from '../../'
+
+import Highlight from '../_highlight'
+import Body from '../../pb_body/_body'
 
 const HighlightDefault = (props) => (
   <div>
@@ -13,11 +15,11 @@ const HighlightDefault = (props) => (
       {' '}
       {'Hello this is a'}
       {' '}
-      <Highlight>{' highlight wrapped'}</Highlight>
+      <Highlight text=" highlight wrapped"/>
     </Body>
     <br />
     <Body
-        highlightedText={['highlighted in the Body Kit ']}
+        highlightedText={['highlighted', 'Body Kit ']}
         highlighting
         text="This is text highlighted in the Body Kit using the text prop."
         {...props}

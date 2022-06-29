@@ -2,17 +2,12 @@
 
 module Playbook
   module PbStatValue
-    class StatValue
-      include Playbook::Props
-      include ActionView::Helpers::NumberHelper
-
-      partial "pb_stat_value/stat_value"
-
+    class StatValue < Playbook::KitBase
       prop :unit
-      prop :value, type: Playbook::Props::Number
+      prop :value, type: Playbook::Props::Numeric
 
       def formatted_value
-        number_with_delimiter(value, delimiter: ",")
+        number_with_delimiter(value, delimiter: ",", separator: ".")
       end
 
       def classname

@@ -2,29 +2,26 @@
 
 module Playbook
   module PbTextarea
-    class Textarea
-      include Playbook::Props
-
-      partial "pb_textarea/textarea"
-
+    class Textarea < Playbook::KitBase
       prop :error
-      prop :object
+      prop :inline, type: Playbook::Props::Boolean,
+                    default: false
       prop :label
       prop :method
       prop :name
       prop :placeholder
       prop :resize, type: Playbook::Props::Enum,
-            values: %w[none both horizontal vertical],
-            default: "none"
+                    values: %w[none both horizontal vertical auto],
+                    default: "none"
       prop :rows, type: Playbook::Props::Number,
-            default: 4
+                  default: 4
       prop :value
       prop :character_count
       prop :onkeyup
       prop :max_characters
 
       def classname
-        generate_classname("pb_textarea_kit") + error_class + resize_class
+        generate_classname("pb_textarea_kit") + error_class + resize_class + inline_class
       end
 
       def character_counter
@@ -37,10 +34,13 @@ module Playbook
         error ? " error" : ""
       end
 
+      def inline_class
+        inline ? " inline" : ""
+      end
+
       def resize_class
         " resize_#{resize}"
       end
-
     end
   end
 end

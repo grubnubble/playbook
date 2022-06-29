@@ -1,9 +1,12 @@
 /* @flow */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classnames from 'classnames'
-import { Icon, Title } from '../'
-import { globalProps } from '../utilities/globalProps.js'
+
+import { globalProps } from '../utilities/globalProps'
+
+import Icon from '../pb_icon/_icon'
+import Title from '../pb_title/_title'
 
 const iconMap = {
   success: 'check',
@@ -16,26 +19,52 @@ type FixedConfirmationToastProps = {
   className?: string,
   closeable?: boolean,
   data?: string,
+  horizontal?: 'right' | 'left' | 'center',
   id?: string,
-  status?: "success" | "error" | "neutral" | "tip",
+  multiLine?: boolean,
+  onClose?: () => void,
+  open?: boolean,
+  status?: 'success' | 'error' | 'neutral' | 'tip',
   text: string,
+  vertical?: 'top' | 'bottom',
 }
 
 const FixedConfirmationToast = (props: FixedConfirmationToastProps) => {
   const [showToast, toggleToast] = useState(true)
-  const { className, closeable = false, status = 'neutral', text } = props
+  const {
+    className,
+    closeable = false,
+    horizontal,
+    multiLine = false,
+    onClose = () => {},
+    open = true,
+    status = 'neutral',
+    text,
+    vertical,
+  } = props
   const css = classnames(
     `pb_fixed_confirmation_toast_kit_${status}`,
+    { '_multi_line': multiLine },
+    { [`positioned_toast ${vertical} ${horizontal}`]: vertical && horizontal },
     globalProps(props),
     className
   )
   const icon = iconMap[status]
 
+  useEffect(() => {
+    toggleToast(open)
+  }, [open])
+
+  const handleClick = () => {
+    toggleToast(!closeable)
+    onClose()
+  }
+
   return (
     <If condition={showToast}>
       <div
           className={css}
-          onClick={closeable && (() => toggleToast(false))}
+          onClick={handleClick}
       >
         <If condition={icon}>
           <Icon

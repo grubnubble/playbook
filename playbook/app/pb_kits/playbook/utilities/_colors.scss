@@ -1,13 +1,17 @@
-@function tint($color, $percentage) {
-  @return mix($white, $color, $percentage);
-}
-
 @function shade($color, $percentage) {
   @return mix($charcoal, $color, $percentage);
 }
 
 @function dim($color, $percentage) {
   @return mix($bg_dark, $color, $percentage);
+}
+
+@function lightenText($color, $threshold: 47) {
+  $text_color: $text_lt_default;
+  @if ((type-of($color) == color) and (lightness($color) < $threshold)) {
+    $text_color: $text_dk_default;
+  }
+  @return $text_color;
 }
 
 @mixin background-color($colors-list) {

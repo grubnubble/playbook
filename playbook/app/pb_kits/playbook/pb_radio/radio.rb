@@ -4,13 +4,9 @@ require "action_view"
 
 module Playbook
   module PbRadio
-    class Radio
-      include ActionView::Helpers::FormTagHelper
-      include ActionView::Context
-      include Playbook::Props
-
-      partial "pb_radio/radio"
-
+    class Radio < Playbook::KitBase
+      prop :alignment, type: Playbook::Props::String,
+                       default: ""
       prop :checked, type: Playbook::Props::Boolean,
                      default: false
       prop :error, type: Playbook::Props::Boolean,
@@ -25,7 +21,7 @@ module Playbook
                    default: "radio_text"
 
       def classname
-        generate_classname("pb_radio_kit") + error_class
+        generate_classname("pb_radio_kit") + error_class + alignment_class
       end
 
       def selected
@@ -40,6 +36,10 @@ module Playbook
 
       def error_class
         error ? " error" : ""
+      end
+
+      def alignment_class
+        alignment == "vertical" ? " vertical" : ""
       end
     end
   end

@@ -75,6 +75,7 @@ const TypeaheadWithPillsAsyncUsers = (props) => {
         >
           <User
               align="left"
+              avatar
               avatarUrl={user.imageUrl}
               key={user.value}
               marginBottom="md"
@@ -89,6 +90,7 @@ const TypeaheadWithPillsAsyncUsers = (props) => {
           isMulti
           label="Github Users"
           loadOptions={promiseOptions}
+          noOptionsMessage={() => 'Type to Search'}
           onChange={handleOnChange}
           onMultiValueClick={handleOnMultiValueClick}
           placeholder="type the name of a Github user"

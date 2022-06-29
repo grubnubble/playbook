@@ -2,21 +2,22 @@
 
 module Playbook
   module PbImage
-    class Image
-      include Playbook::Props
-
-      partial "pb_image/image"
-
+    class Image < Playbook::KitBase
       prop :alt
+      prop :on_error, type: Playbook::Props::String,
+                      default: nil
       prop :rounded, type: Playbook::Props::Boolean,
                      default: false
       prop :size, type: Playbook::Props::Enum,
                   values: %w[xs sm md lg xl none],
                   default: "none"
+      prop :transition, type: Playbook::Props::Enum,
+                        values: %w[blur fade scale none],
+                        default: "fade"
       prop :url
 
       def classname
-        generate_classname("pb_image_kit lazyload blur_up", size_class) + rounded_class
+        generate_classname("pb_image_kit#{size_class} #{transition_class} lazyload") + rounded_class
       end
 
     private
@@ -26,7 +27,11 @@ module Playbook
       end
 
       def size_class
-        size == "none" ? nil : size
+        size == "none" ? nil : "_size_#{size}"
+      end
+
+      def transition_class
+        transition == "none" ? nil : transition
       end
     end
   end

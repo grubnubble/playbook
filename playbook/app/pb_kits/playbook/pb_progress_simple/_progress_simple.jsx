@@ -2,7 +2,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import { buildCss } from '../utilities/props'
-import { globalProps } from '../utilities/globalProps.js'
+import { globalProps } from '../utilities/globalProps'
 
 type ProgressSimpleProps = {
   align?: "left" | "center" | "right",
@@ -14,7 +14,7 @@ type ProgressSimpleProps = {
   muted: boolean,
   percent: string,
   value: number,
-  variant?: "default" | "positive" | "negative",
+  variant?: "default" | "positive" | "negative" | "warning",
   width: string,
 }
 

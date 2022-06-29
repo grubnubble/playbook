@@ -5,13 +5,13 @@ require_relative "../../../../app/pb_kits/playbook/pb_icon_value/icon_value"
 RSpec.describe Playbook::PbIconValue::IconValue do
   subject { Playbook::PbIconValue::IconValue }
 
-  it { is_expected.to define_partial }
-
   it { is_expected.to define_prop(:icon).that_is_required }
   it { is_expected.to define_prop(:text) }
-  it { is_expected.to define_enum_prop(:align)
-                  .with_default("left")
-                  .with_values("left", "center", "right") }
+  it {
+    is_expected.to define_enum_prop(:align)
+      .with_default("left")
+      .with_values("left", "center", "right")
+  }
 
   describe "#classname" do
     it "returns namespaced class name", :aggregate_failures do

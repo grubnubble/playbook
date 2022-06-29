@@ -2,11 +2,7 @@
 
 module Playbook
   module PbList
-    class List
-      include Playbook::Props
-
-      partial "pb_list/list"
-
+    class List < Playbook::KitBase
       prop :borderless, type: Playbook::Props::Boolean,
                         default: false
       prop :dark, type: Playbook::Props::Boolean,
@@ -47,6 +43,7 @@ module Playbook
         dark ? "dark" : nil
       end
 
+      # rubocop:disable Style/CaseLikeIf
       def layout_class
         if layout == "right"
           "layout_right"
@@ -56,6 +53,7 @@ module Playbook
           ""
         end
       end
+      # rubocop:enable Style/CaseLikeIf
 
       def size_class
         size ? "large" : nil

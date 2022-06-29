@@ -1,5 +1,6 @@
 import React from 'react'
-import { Table } from '../../'
+
+import Table from '../_table'
 
 const TableAlignmentShiftData = (props) => {
   return (
@@ -28,7 +29,6 @@ const TableAlignmentShiftData = (props) => {
           </td>
         </tr>
       </tbody>
-      <br />
       <thead>
         <tr>
           <th>{'Espresso Drinks'}</th>

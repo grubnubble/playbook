@@ -1,9 +1,19 @@
 import React from 'react'
-import { Textarea } from '../../'
+
+import Textarea from '../_textarea'
 
 const TextareaResize = (props) => {
   return (
     <div>
+      <Textarea
+          label="auto"
+          placeholder="Resize Auto"
+          resize="auto"
+          {...props}
+      />
+
+      <br />
+
       <Textarea
           label="vertical"
           placeholder="Resize Vertical"
@@ -28,7 +38,6 @@ const TextareaResize = (props) => {
           resize="horizontal"
           {...props}
       />
-
     </div>
   )
 }

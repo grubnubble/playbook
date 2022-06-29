@@ -1,32 +1,25 @@
 import Highcharts from 'highcharts'
 
-import { highchartsTheme } from '../pb_dashboard/pbChartsLightTheme.js'
-import colors from '../tokens/_colors.scss'
+import { highchartsTheme } from '../pb_dashboard/pbChartsLightTheme'
+import { highchartsDarkTheme } from '../pb_dashboard/pbChartsDarkTheme'
+import colors from '../tokens/exports/_colors.scss'
 
-require('highcharts/modules/variable-pie')(Highcharts)
-import highchartsMore from 'highcharts/highcharts-more.js'
-import solidGauge from 'highcharts/modules/solid-gauge.js'
+import pie from 'highcharts/modules/variable-pie'
+import highchartsMore from 'highcharts/highcharts-more'
+import solidGauge from 'highcharts/modules/solid-gauge'
+import treemap from 'highcharts/modules/treemap'
+
+pie(Highcharts)
 
 // Map Data Color String Props to our SCSS Variables
+
 const mapColors = (array) => {
+  const regex = /(data)\-[1-8]/ //eslint-disable-line
+
   const newArray = array.map((item) => {
-    return item == 'data-1'
-      ? `${colors.data_1}`
-      : item == 'data-2'
-        ? `${colors.data_2}`
-        : item == 'data-3'
-          ? `${colors.data_3}`
-          : item == 'data-4'
-            ? `${colors.data_4}`
-            : item == 'data-5'
-              ? `${colors.data_5}`
-              : item == 'data-6'
-                ? `${colors.data_6}`
-                : item == 'data-7'
-                  ? `${colors.data_7}`
-                  : item == 'data-8'
-                    ? `${colors.data_8}`
-                    : ''
+    return regex.test(item)
+      ? `${colors[`data_${item[item.length - 1]}`]}`
+      : item
   })
   return newArray
 }
@@ -70,16 +63,22 @@ class pbChart {
     if (this.options.type == 'variablepie' || this.options.type ==  'pie'){
       this.setupPieChart(options)
     } else if (this.options.type == 'gauge') {
-      this.setupGauge()
+      this.setupGauge(options)
+    } else if (this.options.type == 'treemap') {
+      this.setupTreemap(options)
     } else {
-      this.setupChart()
+      this.setupChart(options)
     }
   }
 
-  setupGauge() {
+  setupTheme() {
+    this.options.dark ? Highcharts.setOptions(highchartsDarkTheme) :  Highcharts.setOptions(highchartsTheme)
+  }
+
+  setupGauge(options) {
     highchartsMore(Highcharts)
     solidGauge(Highcharts)
-    Highcharts.setOptions(highchartsTheme)
+    this.setupTheme()
 
     Highcharts.chart(this.defaults.id, {
       chart: {
@@ -126,19 +125,21 @@ class pbChart {
         pointFormat: this.defaults.tooltipHtml,
         followPointer: true,
       },
+      colors: options.colors !== undefined && options.colors.length > 0 ? mapColors(options.colors) : highchartsTheme.colors,
       plotOptions: {
         series: {
           animation: !this.defaults.disableAnimation,
         },
         solidgauge: {
+          borderColor: options.colors !== undefined && options.colors.length === 1 ? mapColors(options.colors).join() : highchartsTheme.colors[0],
           dataLabels: {
             format: `<span class="prefix">${this.defaults.prefix}</span>` +
             '<span class="fix">{y:,f}</span>' +
             `<span class="suffix">${this.defaults.suffix}</span>`,
-          },
-        },
+          }        },
       },
-    })
+    },
+    )
     document.querySelectorAll('.gauge-pane').forEach((pane) => pane.setAttribute('stroke-linejoin', 'round'))
     if (document.querySelector('.prefix')) {
       document.querySelectorAll('.prefix').forEach((prefix) => prefix.setAttribute('y', '28'))
@@ -147,12 +148,13 @@ class pbChart {
   }
 
   setupPieChart(options) {
-    Highcharts.setOptions(highchartsTheme)
+    this.setupTheme()
     Highcharts.chart(this.defaults.id, {
       title: {
         text: this.defaults.title,
       },
       chart: {
+        height: this.defaults.height,
         type: this.defaults.type,
         events: {
           render: (event) => alignBlockElement(event),
@@ -170,7 +172,6 @@ class pbChart {
             format: this.defaults.dataLabelHtml,
           },
           showInLegend: this.defaults.showInLegend,
-
         },
       },
 
@@ -193,9 +194,39 @@ class pbChart {
     })
   }
 
-  setupChart() {
-    Highcharts.setOptions(highchartsTheme)
+  setupTreemap(options) {
+    treemap(Highcharts)
+    this.setupTheme()
+    options.dark ? Highcharts.setOptions(highchartsDarkTheme) :  Highcharts.setOptions(highchartsTheme)
 
+    Highcharts.chart(this.defaults.id, {
+      title: {
+        text: this.defaults.title,
+      },
+      chart: {
+        height: this.defaults.height,
+        type: this.defaults.type,
+      },
+      credits: false,
+      series: [{
+        data: this.defaults.chartData,
+      }],
+      plotOptions: {
+        treemap: {
+          allowTraversingTree: this.defaults.drillable,
+          colorByPoint: !this.defaults.grouped,
+          colors: options.colors !== undefined && options.colors.length > 0 ? mapColors(options.colors) : highchartsTheme.colors,
+        },
+      },
+      tooltip: {
+        pointFormat: this.defaults.tooltipHtml,
+        useHTML: true,
+      },
+    })
+  }
+
+  setupChart(options) {
+    this.setupTheme()
     const configOptions = {
       title: {
         text: this.defaults.title,
@@ -220,6 +251,7 @@ class pbChart {
       legend: {
         enabled: this.defaults.legend,
       },
+      colors: options.colors !== undefined && options.colors.length > 0 ? mapColors(options.colors) : highchartsTheme.colors,
       plotOptions: {
         series: {
           pointStart: this.defaults.pointStart,

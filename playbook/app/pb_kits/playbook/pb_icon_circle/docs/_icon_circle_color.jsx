@@ -1,5 +1,6 @@
 import React from 'react'
-import { IconCircle } from '../../'
+
+import IconCircle from '../_icon_circle'
 
 const IconCircleColor = (props) => {
   return (
@@ -14,7 +15,7 @@ const IconCircleColor = (props) => {
       <IconCircle
           icon="rocket"
           size="sm"
-          variant="blue"
+          variant="orange"
           {...props}
       />
       <br />

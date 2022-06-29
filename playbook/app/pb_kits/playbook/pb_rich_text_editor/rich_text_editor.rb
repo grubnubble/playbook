@@ -2,20 +2,21 @@
 
 module Playbook
   module PbRichTextEditor
-    class RichTextEditor
-      include Playbook::Props
-      partial "pb_rich_text_editor/rich_text_editor"
-
-
+    class RichTextEditor < Playbook::KitBase
       prop :focus, type: Playbook::Props::Boolean,
                    default: false
- 
+
+      prop :inline, type: Playbook::Props::Boolean,
+                    default: false
+
       prop :simple, type: Playbook::Props::Boolean,
                     default: false
 
       prop :sticky, type: Playbook::Props::Boolean,
-                   default: false
-      
+                    default: false
+      prop :toolbar_bottom, type: Playbook::Props::Boolean,
+                            default: false
+
       prop :value
       prop :template
       prop :placeholder
@@ -34,22 +35,22 @@ module Playbook
 
       def sticky_class
         sticky ? "sticky" : nil
-      end 
+      end
 
       def rich_text_options
         {
           id: id,
+          inline: inline,
           className: classname,
           focus: focus,
           simple: simple,
           sticky: sticky,
+          toolbarBottom: toolbar_bottom,
           value: value,
           template: template,
-          placeholder: placeholder
+          placeholder: placeholder,
         }
       end
-
     end
   end
 end
-   

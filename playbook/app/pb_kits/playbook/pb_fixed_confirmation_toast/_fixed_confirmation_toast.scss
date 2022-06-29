@@ -1,3 +1,4 @@
+@import "../tokens/positioning";
 @import "../tokens/spacing";
 @import "../tokens/colors";
 @import "../pb_body/body";
@@ -30,6 +31,37 @@ $confirmation_toast_colors: (
     opacity: 1;
   }
 
+  &.positioned_toast {
+    position: fixed;
+    z-index: $z_9;
+    display: flex;
+    justify-content: space-around;
+
+    &.top {
+      top: $space_md;
+    }
+
+    &.bottom {
+      bottom: $space_md;
+    }
+
+    &.left {
+      left: $space_md;
+      right: auto;
+    }
+
+    &.center {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+    }
+
+    &.right {
+      left: auto;
+      right: $space_md;
+    }
+  }
+
   @each $color_name, $color_value in $confirmation_toast_colors {
     &[class*=_#{$color_name}]  {
       background: $color_value;
@@ -46,6 +78,13 @@ $confirmation_toast_colors: (
 
       .pb_icon {
         color: $white;
+      }
+
+      &[class*=_multi_line] .pb_fixed_confirmation_toast_text {
+        color: $white;
+        margin: 0 $space_md 0 $space_md;
+        max-width: 100%;
+        white-space: break-spaces;
       }
     }
   }

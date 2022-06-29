@@ -5,14 +5,13 @@ require_relative "../../../../app/pb_kits/playbook/pb_message/message"
 RSpec.describe Playbook::PbMessage::Message do
   subject { Playbook::PbMessage::Message }
 
-  it { is_expected.to define_partial }
-
   it { is_expected.to define_prop(:avatar_name) }
   it { is_expected.to define_prop(:avatar_status) }
   it { is_expected.to define_prop(:avatar_url) }
   it { is_expected.to define_prop(:label) }
   it { is_expected.to define_prop(:message) }
   it { is_expected.to define_prop(:timestamp) }
+  it { is_expected.to define_prop(:timezone).with_default("America/New_York") }
 
   describe "#classname" do
     it "returns namespaced class name", :aggregate_failures do

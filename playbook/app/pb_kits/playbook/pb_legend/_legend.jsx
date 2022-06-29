@@ -2,21 +2,17 @@
 
 import React from 'react'
 import classnames from 'classnames'
-import { buildAriaProps, buildCss, buildDataProps } from '../utilities/props'
-import { globalProps } from '../utilities/globalProps.js'
 
-import { Body, Title } from '../'
+import { buildAriaProps, buildCss, buildDataProps } from '../utilities/props'
+import { globalProps } from '../utilities/globalProps'
+
+import Body from '../pb_body/_body'
+import Title from '../pb_title/_title'
 
 type LegendProps = {
   aria?: object,
   className?: string,
-  color?: | "data_1"
-    | "data_2"
-    | "data_3"
-    | "data_4"
-    | "data_5"
-    | "data_6"
-    | "data_7",
+  color?: string,
   dark?: boolean,
   data?: object,
   id?: string,

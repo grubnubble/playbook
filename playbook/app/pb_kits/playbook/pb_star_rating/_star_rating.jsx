@@ -3,14 +3,9 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {
-  buildAriaProps,
-  buildDataProps,
-} from '../utilities/props'
+import { buildAriaProps, buildDataProps } from '../utilities/props'
 
-import {
-  Icon,
-} from '../'
+import Icon from '../pb_icon/_icon'
 
 type StarRatingProps = {
   aria?: object,
@@ -52,17 +47,17 @@ const StarRating = ({
         className={css}
         id={id}
     >
-      <div className="pb_star_rating_number">
-        <If condition={!hideRating}>
+      <If condition={!hideRating}>
+        <div className="pb_star_rating_number">
           {rating}
-        </If>
-      </div>
+        </div>
+      </If>
 
       <div className="pb_star_rating_wrapper">
         <div className="pb_star_rating_highlight">
           {starCount().map((_, index) => (
             <Icon
-                fixedWidth
+                fixedWidth={false}
                 icon="star"
                 key={index}
             />
@@ -70,7 +65,7 @@ const StarRating = ({
 
           <If condition={hasHalfStar()}>
             <Icon
-                fixedWidth
+                fixedWidth={false}
                 icon="star-half"
             />
           </If>
@@ -78,23 +73,23 @@ const StarRating = ({
 
         <div className="pb_star_rating_base">
           <Icon
-              fixedWidth
+              fixedWidth={false}
               icon="star"
           />
           <Icon
-              fixedWidth
+              fixedWidth={false}
               icon="star"
           />
           <Icon
-              fixedWidth
+              fixedWidth={false}
               icon="star"
           />
           <Icon
-              fixedWidth
+              fixedWidth={false}
               icon="star"
           />
           <Icon
-              fixedWidth
+              fixedWidth={false}
               icon="star"
           />
         </div>

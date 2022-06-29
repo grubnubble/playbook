@@ -2,11 +2,7 @@
 
 module Playbook
   module PbProgressPills
-    class ProgressPills
-      include Playbook::Props
-
-      partial "pb_progress_pills/progress_pills"
-
+    class ProgressPills < Playbook::KitBase
       prop :active, type: Playbook::Props::Number,
                     default: 0
       prop :value
@@ -27,7 +23,13 @@ module Playbook
       end
 
       def active_step(step)
-         step <= active ? "_active" : "_inactive"
+        step <= active ? "_active" : "_inactive"
+      end
+
+      def aria_attributes
+        return aria if aria.present?
+
+        { hidden: true }
       end
 
       def dark_pill

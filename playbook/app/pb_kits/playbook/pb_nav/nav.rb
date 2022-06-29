@@ -2,19 +2,14 @@
 
 module Playbook
   module PbNav
-    class Nav
-      include ActionView::Helpers::TagHelper
-      include Playbook::Props
-
-      partial "pb_nav/nav"
-
+    class Nav < Playbook::KitBase
       prop :link, default: "#"
       prop :title
       prop :orientation, type: Playbook::Props::Enum,
                          values: %w[vertical horizontal],
                          default: "vertical"
       prop :variant, type: Playbook::Props::Enum,
-                     values: %w[normal subtle],
+                     values: %w[normal subtle bold],
                      default: "normal"
       prop :highlight, type: Playbook::Props::Boolean, default: true
       prop :borderless, type: Playbook::Props::Boolean, default: false

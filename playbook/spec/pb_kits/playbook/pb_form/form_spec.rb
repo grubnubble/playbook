@@ -2,64 +2,40 @@
 
 require "rails_helper"
 
-RSpec.describe Playbook::PbForm::Form do
-  describe "#to_partial_path" do
-    it "is a form with variant by default" do
-      view_object = described_class.new
-      expect(view_object.to_partial_path).to eq("pb_form/form_form_with")
-    end
-
-    it "is a form with variant when `form_system` is `form_with`" do
-      view_object = described_class.new(form_system: "form_with")
-
-      expect(view_object.to_partial_path).to eq("pb_form/form_form_with")
-    end
-
-    it "is a simple form variant when simple form is loaded and the `form_system` is `simple_form` " do
-      load_simple_form
-      view_object = described_class.new(form_system: "simple_form")
-
-      expect(view_object.to_partial_path).to eq("pb_form/form_simple_form")
+RSpec.describe Playbook::PbForm::Form, type: :kit do
+  before do
+    helper.extend Playbook::PbKitHelper
+    helper.define_singleton_method :users_path do |*|
+      "/users"
     end
   end
 
-  describe "#merged_form_system_options" do
-    it "adds pb-form to the form_with `class` option" do
-      view_object = described_class.new(form_system_options: { class: "example-class-option" })
+  it "allows the user to set the URL" do
+    rendered = helper.pb_rails "form", props: { options: { url: "http://example.org" } }
 
-      expect(view_object.merged_form_system_options).to include(class: "pb-form example-class-option")
-    end
-
-    it "sets builder to `FormBuilder::FormWithFormBuilder` when `form_system` is `form_with`" do
-      view_object = described_class.new
-
-      expect(view_object.merged_form_system_options).to include(builder: Playbook::PbForm::FormBuilder::FormWithFormBuilder)
-    end
-
-    it "adds pb-form to the simple_form `class` option" do
-      load_simple_form
-      view_object = described_class.new(
-        form_system: "simple_form",
-        form_system_options: [nil, { html: { class: "example-class-option" } }]
-      )
-
-      expect(view_object.merged_form_system_options[1]).to include(html: { class: "pb-form example-class-option" })
-    end
-
-    it "sets builder to `FormBuilder::SimpleFormBuilder` when `form_system` is `simple_form`" do
-      load_simple_form
-      view_object = described_class.new(form_system: "simple_form")
-
-      expect(view_object.merged_form_system_options[1]).to include(builder: Playbook::PbForm::FormBuilder::SimpleFormBuilder)
-    end
+    expect(rendered).to have_tag("form[action='http://example.org']")
   end
 
-  def unload_simple_form
-    hide_const("SimpleForm")
+  it "allows the user to not set the URL" do
+    model_name = double(name: "User", route_key: :users, param_key: :id)
+    model = double("model", model_name: model_name, persisted?: false)
+    object = double("object", to_model: model)
+    rendered = helper.pb_rails "form", props: { options: { model: object } }
+
+    expect(rendered).to have_tag("form[action='/users']")
   end
 
-  def load_simple_form
-    stub_const("SimpleForm", Module.new)
-    stub_const("SimpleForm::FormBuilder", Class.new)
+  it "allows the user to set the URL" do
+    rendered = helper.pb_rails "form", props: { options: { url: "http://example.org" } }
+
+    expect(rendered).to have_tag("form.pb-form")
+  end
+
+  it "allows the user render actions" do
+    rendered = helper.pb_rails "form", props: { options: { url: "http://example.org" } } do |form|
+      form.actions(&:submit)
+    end
+
+    expect(rendered).to have_tag("form > ol.pb-form-actions > li > button.pb_button_kit_primary_inline_enabled[type=submit]")
   end
 end

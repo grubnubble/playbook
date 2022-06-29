@@ -2,11 +2,7 @@
 
 module Playbook
   module PbSelectableIcon
-    class SelectableIcon
-      include Playbook::Props
-
-      partial "pb_selectable_icon/selectable_icon"
-
+    class SelectableIcon < Playbook::KitBase
       # Icon props
       prop :icon, type: Playbook::Props::String
       # Title text
@@ -24,7 +20,7 @@ module Playbook
       prop :value
 
       prop :input_options, type: Playbook::Props::Hash,
-                                      default: {}
+                           default: {}
 
       # Conditional rendering for input field
       prop :inputs, type: Playbook::Props::String,

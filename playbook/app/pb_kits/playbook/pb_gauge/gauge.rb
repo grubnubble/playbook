@@ -2,11 +2,7 @@
 
 module Playbook
   module PbGauge
-    class Gauge
-      include Playbook::Props
-
-      partial "pb_gauge/gauge"
-
+    class Gauge < Playbook::KitBase
       prop :chart_data, type: Playbook::Props::Array,
                         default: [{ name: "Name", value: 0 }]
       prop :style, type: Playbook::Props::Enum,
@@ -24,6 +20,7 @@ module Playbook
       prop :disable_animation, type: Playbook::Props::Boolean, default: false
       prop :min, type: Playbook::Props::Numeric, default: 0
       prop :max, type: Playbook::Props::Numeric, default: 100
+      prop :colors, type: Playbook::Props::Array, default: []
 
       def chart_data_formatted
         chart_data.map { |hash| hash[:y] = hash.delete :value }
@@ -35,6 +32,7 @@ module Playbook
           id: id,
           chartData: chart_data_formatted,
           circumference: full_circle ? [0, 360] : [-100, 100],
+          dark: dark ? "dark" : "",
           disableAnimation: disable_animation,
           height: height,
           min: min,
@@ -46,6 +44,7 @@ module Playbook
           style: style,
           tooltipHtml: tooltip_html,
           type: "gauge",
+          colors: colors,
         }.to_json.html_safe
       end
 

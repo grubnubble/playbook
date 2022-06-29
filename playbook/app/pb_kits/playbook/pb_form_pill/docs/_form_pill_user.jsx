@@ -1,5 +1,5 @@
 import React from 'react'
-import FormPill from '../_form_pill.jsx'
+import FormPill from '../_form_pill'
 
 const FormPillDefault = (props) => {
   return (
@@ -8,18 +8,14 @@ const FormPillDefault = (props) => {
       <FormPill
           avatarUrl="https://randomuser.me/api/portraits/women/44.jpg"
           name="Anna Black"
-          onClick={() => {
- alert('Click!')
-}}
+          onClick={() => alert('Click!')}
           {...props}
       />
       <br />
       <br />
       <FormPill
           name="Anna Black"
-          onClick={() => {
- alert('Click!')
-}}
+          onClick={() => alert('Click!')}
           {...props}
       />
     </div>

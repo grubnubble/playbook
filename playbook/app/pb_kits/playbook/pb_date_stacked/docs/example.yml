@@ -6,8 +6,7 @@ examples:
   - date_stacked_reverse: Day & Month Reverse
   - date_stacked_sizes: Sizes
   - date_stacked_align: Alignment
-  - date_stacked_dark: Dark
-
+  - date_stacked_bold: Bold
 
 
   react:
@@ -15,8 +14,4 @@ examples:
   - date_stacked_not_current_year: Not Current Year
   - date_stacked_reverse: Day & Month Reverse
   - date_stacked_sizes: Sizes
-  - date_stacked_align: Alignment
-  - date_stacked_dark: Dark
-
-
-
+  - date_stacked_bold: Bold

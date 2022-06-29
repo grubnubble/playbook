@@ -5,16 +5,16 @@ require_relative "../../../../app/pb_kits/playbook/pb_selectable_list/selectable
 RSpec.describe Playbook::PbSelectableList::SelectableList do
   subject { Playbook::PbSelectableList::SelectableList }
 
-  it { is_expected.to define_partial }
-
   it { is_expected.to define_prop(:text) }
-  it { is_expected.to define_enum_prop(:variant)
-                      .with_default("checkbox")
-                      .with_values("radio", "checkbox")
+  it {
+    is_expected.to define_enum_prop(:variant)
+      .with_default("checkbox")
+      .with_values("radio", "checkbox")
   }
-  it { is_expected.to define_prop(:items)
-                      .of_type(Playbook::Props::Array)
-                      .with_default([])
+  it {
+    is_expected.to define_prop(:items)
+      .of_type(Playbook::Props::Array)
+      .with_default([])
   }
 
   describe "#classname" do

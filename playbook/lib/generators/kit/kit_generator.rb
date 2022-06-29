@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/StringConcatenation
 class KitGenerator < Rails::Generators::NamedBase
   desc "This generator creates a new Playbook Kit"
   source_root File.expand_path("templates", __dir__)
   class_option :props, type: :array, default: []
 
-  REACT_EXAMPLES_PATH = "app/pb_kits/playbook/packs/react-examples.js".freeze
-  REACT_INDEX_PATH = "app/pb_kits/playbook/index.js".freeze
+  REACT_EXAMPLES_PATH = "app/pb_kits/playbook/playbook-doc.js"
+  REACT_INDEX_PATH = "app/pb_kits/playbook/index.js"
 
   def create_templates
     kit_name = name.strip.downcase
@@ -38,7 +39,7 @@ class KitGenerator < Rails::Generators::NamedBase
       say_status  "#{@kit_name_capitalize} kit already exists.",
                   "Please choose another name or manually make changes to the existing kit.",
                   :red
-      return
+      nil
     else
       # Add kit to Playbook menu ==========================
       open("app/pb_kits/playbook/data/menu.yml", "a") do |f|
@@ -61,7 +62,7 @@ class KitGenerator < Rails::Generators::NamedBase
       if yes?("Create RAILS #{@kit_name_underscore} kit? (y/N)")
         @rails_kit = true
         template "kit_ruby.erb", "#{full_kit_directory}/#{@kit_name_underscore}.rb"
-        template "kit_html.erb", "#{full_kit_directory}/_#{@kit_name_underscore}.html.erb"
+        template "kit_html.erb", "#{full_kit_directory}/#{@kit_name_underscore}.html.erb"
         template "kit_example_rails.erb", "#{full_kit_directory}/docs/_#{@kit_name_underscore}_default.html.erb"
         template "kit_ruby_spec.erb", "spec/pb_kits/playbook/kits/#{@kit_name_underscore}_spec.rb"
         say_status  "complete",
@@ -78,14 +79,14 @@ class KitGenerator < Rails::Generators::NamedBase
         template "kit_js.erb", "#{full_kit_directory}/docs/index.js"
 
         react_imports_page(
-          path: "#{REACT_EXAMPLES_PATH}",
+          path: REACT_EXAMPLES_PATH.to_s,
           import_statement: "import * as #{@kit_name_pascal} from 'pb_#{@kit_name_underscore}/docs'\n",
           webpack_statement: "  ...#{@kit_name_pascal},\n",
           import_area_indicator: "// KIT EXAMPLES\n"
         )
 
         react_export_page(
-          path: "#{REACT_INDEX_PATH}",
+          path: REACT_INDEX_PATH.to_s,
           export_statement: "export #{@kit_name_pascal} from './pb_#{@kit_name_underscore}/_#{@kit_name_underscore}.jsx'\n",
           start_comment: "// vvv React Component JSX Imports from the React Kits vvv\n",
           end_comment: "// ^^^ React Component JSX Imports from the React Kits ^^^\n"
@@ -103,6 +104,7 @@ class KitGenerator < Rails::Generators::NamedBase
     end
   end
 
+# rubocop:enable Style/StringConcatenation
 private
 
   def react_imports_page(path:, import_statement:, webpack_statement:, import_area_indicator:)

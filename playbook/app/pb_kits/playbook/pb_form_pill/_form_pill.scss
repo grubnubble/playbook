@@ -18,6 +18,8 @@ $form_pill_colors: (
   padding: 0 $space-sm/3;
   height: $pb_form_pill_height;
   border-radius: $pb_form_pill_height/2;
+  margin-bottom: 2px;
+  margin-top: 2px;
   cursor: pointer;
   @each $color_name, $color_value in $form_pill_colors {
     &[class*=_#{$color_name}]  {
@@ -48,5 +50,31 @@ $form_pill_colors: (
         padding-left: $space-sm;
       }
     }
+  }
+  &.small {
+    height: fit-content;
+    height: -moz-fit-content;
+    .pb_form_pill_text, .pb_form_pill_close, .pb_form_pill_tag {
+      font-size: 16px;
+      font-weight: 400;
+    }
+    .pb_form_pill_text, .pb_form_pill_tag {
+      line-height: 1.7;
+      padding-left: $space_xs;
+      padding-right: 2px;
+    }
+    [class^=pb_avatar_kit], [class^=pb_avatar_kit] .avatar_wrapper {
+      width: 20px;
+      height: 20px;
+      flex-basis: 20px;
+      &::before { line-height: 21px; }
+    }
+  }
+  &[class*=lowercase] {
+    text-transform: lowercase;
+  }
+
+  &[class*=none] {
+    text-transform: none;
   }
 }

@@ -1,21 +1,18 @@
 /* @flow */
 
 import React, { useEffect, useRef } from 'react'
-import { pbChart } from '../'
-import { globalProps } from '../utilities/globalProps'
 import classnames from 'classnames'
 import Highcharts from 'highcharts'
 
-import {
-  buildAriaProps,
-  buildCss,
-  buildDataProps,
-} from '../utilities/props'
+import { buildAriaProps, buildCss, buildDataProps } from '../utilities/props'
+import { globalProps } from '../utilities/globalProps'
+import pbChart from '../plugins/pb_chart'
 
 type GaugeProps = {
   aria: Object,
   className?: string,
   chartData?: array,
+  dark?: Boolean,
   data?: Object,
   disableAnimation: boolean,
   fullCircle: boolean,
@@ -29,6 +26,7 @@ type GaugeProps = {
   suffix: string,
   title: string,
   tooltipHtml: string,
+  colors: array,
 }
 
 const Gauge = (props: GaugeProps) => {
@@ -36,6 +34,7 @@ const Gauge = (props: GaugeProps) => {
     aria = {},
     className,
     chartData = [{ name: 'Name', value: 0 }],
+    dark = false,
     data = {},
     disableAnimation = false,
     fullCircle = false,
@@ -49,6 +48,7 @@ const Gauge = (props: GaugeProps) => {
     suffix = '',
     title = '',
     tooltipHtml = '<span style="font-weight: bold; color:{point.color};">●</span>{point.name}: ' + '<b>{point.y}</b>',
+    colors = [],
   } = props
 
   const ariaProps = buildAriaProps(aria)
@@ -69,6 +69,7 @@ const Gauge = (props: GaugeProps) => {
       id: id,
       chartData: formattedChartData,
       circumference: fullCircle ? [0, 360] : [-100, 100],
+      dark,
       disableAnimation: disableAnimation,
       height: height,
       min: min,
@@ -80,6 +81,7 @@ const Gauge = (props: GaugeProps) => {
       style: style,
       tooltipHtml: tooltipHtml,
       type: 'gauge',
+      colors: colors,
     })
   }, [])
 

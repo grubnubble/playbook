@@ -1,7 +1,8 @@
 import React from 'react'
-import { Legend } from '../../'
 
-const products = ['Windows', 'Doors', 'Roofing', 'Siding', 'Solar Gutters', 'Insulation', 'Other']
+import Legend from '../_legend'
+
+const products = ['Windows', 'Doors', 'Roofing', 'Siding', 'Solar', 'Gutters', 'Insulation', 'Other']
 
 const LegendDefault = (props) => (
   <div>

@@ -1,10 +1,18 @@
 /* @flow */
+/* eslint-disable react-hooks/rules-of-hooks */
 
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useEffect, useRef } from 'react'
 import classnames from 'classnames'
-import { Body, Caption, Flex, FlexItem } from '../'
+
+import PbTextarea from './'
 import type { InputCallback } from '../types.js'
-import { globalProps } from '../utilities/globalProps.js'
+
+import { globalProps } from '../utilities/globalProps'
+
+import Body from '../pb_body/_body'
+import Caption from '../pb_caption/_caption'
+import Flex from '../pb_flex/_flex'
+import FlexItem from '../pb_flex/_flex_item'
 
 type TextareaProps = {
   characterCount?: string,
@@ -13,6 +21,7 @@ type TextareaProps = {
   disabled?: boolean,
   error?: string,
   id?: string,
+  inline?: boolean,
   object?: string,
   method?: string,
   label?: string,
@@ -22,7 +31,7 @@ type TextareaProps = {
   name?: string,
   required?: boolean,
   rows?: number,
-  resize: 'none' | 'both' | 'horizontal' | 'vertical',
+  resize: 'none' | 'both' | 'horizontal' | 'vertical' | 'auto',
   onChange?: InputCallback<HTMLTextAreaElement>,
 }
 
@@ -31,6 +40,7 @@ const Textarea = ({
   className,
   children,
   disabled,
+  inline = false,
   resize = 'none',
   error,
   label,
@@ -43,9 +53,17 @@ const Textarea = ({
   value,
   ...props
 }: TextareaProps, ref: React.ElementRef<"textarea">) => {
+  ref = ref || useRef(false)
+  useEffect(() => {
+    if (ref.current && resize === 'auto') {
+      PbTextarea.addMatch(ref.current)
+    }
+  })
+
   const errorClass = error ? 'error' : null
+  const inlineClass = inline ? 'inline' : ''
   const resizeClass = `resize_${resize}`
-  const classes = classnames('pb_textarea_kit', errorClass, resizeClass, globalProps(props), className)
+  const classes = classnames('pb_textarea_kit', errorClass, inlineClass, resizeClass, globalProps(props), className)
 
   const characterCounter = () => {
     return maxCharacters && characterCount ? `${checkIfZero(characterCount)} / ${maxCharacters}` : checkIfZero(characterCount)

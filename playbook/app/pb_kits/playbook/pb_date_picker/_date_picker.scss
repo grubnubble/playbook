@@ -2,6 +2,11 @@
 @import "../pb_textarea/textarea_mixin";
 @import "../tokens/colors";
 @import "./sass_partials/flatpickr_styles";
+@import "./sass_partials/inline_styles";
+@import "./sass_partials/month_and_year_styles";
+@import "./sass_partials/time_selection_styles";
+
+
 
 [class^=pb_date_picker_kit] {
   .input_wrapper {
@@ -28,6 +33,13 @@
       .flatpickr-calendar:after {
         content: none;
       }
+    }
+  }
+
+  &:focus,:focus-within{
+    div.cal_icon_wrapper, input.text_input{
+      @include transition_default;
+      border-color: $primary;
     }
   }
 }

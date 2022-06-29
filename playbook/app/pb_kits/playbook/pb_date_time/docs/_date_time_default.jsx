@@ -4,7 +4,7 @@ import DateTime from '../_date_time.jsx'
 const DateTimeDefault = (props) => (
   <div>
     <DateTime
-        datetime={new Date()}
+        datetime={new Date('2020-12-31 14:24:09')}
         showDayOfWeek
         showIcon
         {...props}
@@ -29,7 +29,8 @@ const DateTimeDefault = (props) => (
     <br />
 
     <DateTime
-        datetime={new Date()}
+        datetime={new Date('2020/12/31 14:24:09 -0500')}
+        timeZone="Asia/Tokyo"
         {...props}
     />
   </div>

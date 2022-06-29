@@ -1,7 +1,9 @@
 /* @flow */
 
 import React, { Node, useState } from 'react'
-import { CircleIconButton, PbReactPopover } from '../../'
+
+import CircleIconButton from '../../pb_circle_icon_button/_circle_icon_button'
+import PbReactPopover from '../../pb_popover/_popover'
 
 const FiltersPopoverProps = { children: Node }
 const FiltersPopover = ({ children, dark, minWidth }: FiltersPopoverProps) => {
@@ -28,7 +30,11 @@ const FiltersPopover = ({ children, dark, minWidth }: FiltersPopoverProps) => {
         shouldClosePopover={updateHide}
         show={!hide}
     >
-      <div className="pb-form">{children}</div>
+      <div className="pb-form">
+        {typeof children === 'function'
+          ? children({ closePopover: () => (updateHide(true)) })
+          : children}
+      </div>
     </PbReactPopover>
   )
 }

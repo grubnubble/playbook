@@ -2,12 +2,7 @@
 
 module Playbook
   module PbIconStatValue
-    class IconStatValue
-      include Playbook::Props
-      include ActionView::Helpers::NumberHelper
-
-      partial "pb_icon_stat_value/icon_stat_value"
-
+    class IconStatValue < Playbook::KitBase
       prop :icon, required: true
 
       prop :size, type: Playbook::Props::Enum,
@@ -29,7 +24,6 @@ module Playbook
 
       prop :value, type: Playbook::Props::Numeric
 
-
       def classname
         generate_classname("pb_icon_stat_value_kit", orientation, size, variant)
       end
@@ -39,6 +33,7 @@ module Playbook
       end
 
       def title_size
+        # rubocop:disable Style/CaseLikeIf
         if size == "lg"
           1
         elsif size == "md"
@@ -46,6 +41,7 @@ module Playbook
         else
           3
         end
+        # rubocop:enable Style/CaseLikeIf
       end
     end
   end

@@ -1,28 +1,29 @@
 # frozen_string_literal: true
 
-# require_dependency "app/pb_kits/playbook/pb_form/form_builder"
-
 module Playbook
   module PbForm
-    class Form
-      include Playbook::Props
-
-      clear_props
-      prop :form_system, type: Playbook::Props::Enum,
-                         values: %w[form_with simple_form],
-                         default: "form_with"
-      prop :form_system_options, type: Playbook::Props::Base
-      prop :children, type: Playbook::Props::Proc
+    class Form < ::Playbook::KitBase
+      prop :form_system, deprecated: "Playbook only supports form_with and this prop is ignored",
+                         type: Playbook::Props::Base
+      prop :form_system_options, deprecated: "Use options instead",
+                                 type: Playbook::Props::Base
+      prop :options, type: Playbook::Props::Base
       prop :validate, type: Playbook::Props::Boolean, default: false
 
-      delegate :to_partial_path, to: :specific_form
-      delegate :merged_form_system_options, to: :specific_form
-      delegate :form_builder, to: :specific_form
+      def render_in(view_context, &block)
+        view_context.pb_form_with(**form_options, &block)
+      end
 
     private
 
-      def specific_form
-        @specific_form ||= "#{self.class}::#{form_system.classify}Form".constantize.new(self)
+      def form_options
+        {
+          id: id,
+          aria: aria,
+          class: classname,
+          data: data,
+          validate: validate,
+        }.merge(prop(:options) || prop(:form_system_options) || {})
       end
     end
   end

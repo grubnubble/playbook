@@ -2,11 +2,7 @@
 
 module Playbook
   module PbTable
-    class Table
-      include Playbook::Props
-
-      partial "pb_table/table"
-
+    class Table < Playbook::KitBase
       prop :size, type: Playbook::Props::Enum,
                   values: %w[sm md lg],
                   default: "md"
@@ -21,12 +17,17 @@ module Playbook
       prop :responsive, type: Playbook::Props::Enum,
                         values: %w[collapse scroll none],
                         default: "collapse"
+      prop :collapse, type: Playbook::Props::Enum,
+                      values: %w[sm md lg],
+                      default: "sm"
       prop :text
+      prop :sticky, type: Playbook::Props::Boolean,
+                    default: false
 
       def classname
         generate_classname(
           "pb_table", "table-#{size}", single_line_class, dark_class,
-          disable_hover_class, container_class, data_table_class,
+          disable_hover_class, container_class, data_table_class, sticky_class, collapse_class,
           "table-responsive-#{responsive}", separator: " "
         )
       end
@@ -51,6 +52,14 @@ module Playbook
 
       def container_class
         container ? "table-card" : nil
+      end
+
+      def collapse_class
+        responsive != "none" ? "table-collapse-#{collapse}" : ""
+      end
+
+      def sticky_class
+        sticky ? "sticky-header" : nil
       end
     end
   end

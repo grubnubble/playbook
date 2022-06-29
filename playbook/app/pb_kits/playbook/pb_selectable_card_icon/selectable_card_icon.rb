@@ -2,11 +2,7 @@
 
 module Playbook
   module PbSelectableCardIcon
-    class SelectableCardIcon
-      include Playbook::Props
-
-      partial "pb_selectable_card_icon/selectable_card_icon"
-
+    class SelectableCardIcon < Playbook::KitBase
       # Icon and text props
       prop :icon, type: Playbook::Props::String
       prop :title_text, type: Playbook::Props::String
@@ -26,7 +22,7 @@ module Playbook
       prop :value
 
       prop :input_options, type: Playbook::Props::Hash,
-                                      default: {}
+                           default: {}
 
       def classname
         generate_classname("pb_selectable_card_icon_kit", checked_class, enabled_disabled_class)

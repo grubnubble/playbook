@@ -2,15 +2,14 @@
 
 module Playbook
   module PbAvatar
-    class Avatar
-      include Playbook::Props
-
-      partial "pb_avatar/avatar"
-
-      prop :image_url
-      prop :name, default: ""
+    class Avatar < Playbook::KitBase
+      prop :image_url, type: Playbook::Props::String
+      prop :image_alt, type: Playbook::Props::String,
+                       default: ""
+      prop :name, type: Playbook::Props::String,
+                  default: ""
       prop :size, type: Playbook::Props::Enum,
-                  values: %w[xs sm md base lg xl],
+                  values: %w[xxs xs sm md base lg xl],
                   default: "md"
       prop :status
 
@@ -19,11 +18,15 @@ module Playbook
       end
 
       def classname
-        generate_classname("pb_avatar_kit", size)
+        generate_classname("pb_avatar_kit", "size_#{size}")
       end
 
       def online_status_props
         { status: status, classname: "size_#{size}" }
+      end
+
+      def handle_img_error
+        "this.style.display = 'none'"
       end
     end
   end

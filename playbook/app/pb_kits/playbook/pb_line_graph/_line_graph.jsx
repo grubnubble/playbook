@@ -2,11 +2,13 @@
 
 import React from 'react'
 import classnames from 'classnames'
-import { globalProps } from '../utilities/globalProps.js'
-import { pbChart } from '../'
+
+import { globalProps } from '../utilities/globalProps'
+import pbChart from '../plugins/pb_chart'
 
 type LineGraphProps = {
   axisTitle?: string,
+  dark?: Boolean,
   xAxisCategories: array,
   yAxisMin: number,
   yAxisMax: number,
@@ -24,11 +26,13 @@ type LineGraphProps = {
   legend?: boolean,
   toggleLegendClick?: boolean,
   height?: string,
-}
+  colors: array,
+  }
 
 export default class LineGraph extends React.Component<LineGraphProps> {
   static defaultProps = {
     className: 'pb_bar_graph',
+    dark: false,
     gradient: false,
     type: 'line',
     legend: false,
@@ -38,6 +42,7 @@ export default class LineGraph extends React.Component<LineGraphProps> {
   componentDidMount() {
     const {
       axisTitle,
+      dark,
       xAxisCategories,
       yAxisMin,
       yAxisMax,
@@ -51,11 +56,14 @@ export default class LineGraph extends React.Component<LineGraphProps> {
       legend,
       toggleLegendClick,
       height,
+      colors = [],
     } = this.props
 
     new pbChart(`.${className}`, {
       axisTitle: axisTitle,
       chartData: chartData,
+      colors: colors,
+      dark,
       id: id,
       pointStart: pointStart,
       subtitle: subTitle,

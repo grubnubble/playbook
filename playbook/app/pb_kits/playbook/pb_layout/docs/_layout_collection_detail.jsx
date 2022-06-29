@@ -1,9 +1,15 @@
 import React from 'react'
-import { Card, Layout, Nav, NavItem } from '../../'
+
+import Layout from '../_layout'
+
+import Card from '../../pb_card/_card'
+import Nav from '../../pb_nav/_nav'
+import NavItem from '../../pb_nav/_item'
+
 const Cards = ({ n }) => {
   const cards = []
   for (let i = 0; i < n; ++i) {
-    cards.push(<Card>{'Card content'}</Card>)
+    cards.push(<Card key={i}>{'Card content'}</Card>)
   }
   return (cards)
 }

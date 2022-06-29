@@ -2,11 +2,7 @@
 
 module Playbook
   module PbHomeAddressStreet
-    class HomeAddressStreet
-      include Playbook::Props
-
-      partial "pb_home_address_street/home_address_street"
-
+    class HomeAddressStreet < Playbook::KitBase
       prop :address
       prop :address_cont
       prop :city
@@ -26,11 +22,11 @@ module Playbook
       end
 
       def city_state_zip
-        "#{city.titleize}, #{state} #{zipcode}"
+        [city_state, zipcode].join(" ")
       end
 
       def city_state
-        "#{city.titleize}, #{state}"
+        [city&.titleize, state].join(", ")
       end
 
       def zip
@@ -38,7 +34,7 @@ module Playbook
       end
 
       def address_house_style
-        "#{address&.titleize} #{separator} #{house_style}"
+        [address&.titleize, house_style].join(separator)
       end
 
       def address_house_style2
@@ -46,7 +42,32 @@ module Playbook
       end
 
       def separator
-        house_style ? "\u00b7" : ""
+        house_style ? " \u00b7 " : ""
+      end
+
+      def city_emphasis_props
+        {
+          address_house_style: address_house_style,
+          address_house_style2: address_house_style2,
+          city_state: city_state,
+          dark: dark,
+          home_id: home_id,
+          home_url: home_url,
+          territory: territory,
+          zip: zip,
+        }
+      end
+
+      def street_emphasis_props
+        {
+          address_house_style: address_house_style,
+          address_house_style2: address_house_style2,
+          city_state_zip: city_state_zip,
+          dark: dark,
+          home_id: home_id,
+          home_url: home_url,
+          territory: territory,
+        }
       end
 
     private

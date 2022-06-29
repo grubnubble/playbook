@@ -1,23 +1,25 @@
 /* @flow */
 
 import React, { useEffect, useRef } from 'react'
-import { pbChart } from '../'
-import { globalProps } from '../utilities/globalProps'
 import classnames from 'classnames'
 import Highcharts from 'highcharts'
 
+import { globalProps } from '../utilities/globalProps'
 import { buildAriaProps, buildDataProps } from '../utilities/props'
 
+import pbChart from '../plugins/pb_chart'
 type CircleChartProps = {
   aria: Object,
   chartData?: array,
   children: Node,
   className?: string,
   colors: array,
+  dark?: Boolean,
   data?: Object,
   dataLabelHtml: string,
   dataLabels: boolean,
   headerFormat: string,
+  height?: string,
   id?: string,
   innerSize: "sm" | "md" | "lg" | "none",
   legend: boolean,
@@ -39,10 +41,12 @@ const CircleChart = (props: CircleChartProps) => {
     children,
     className,
     colors = [],
+    dark = false,
     data = {},
     dataLabelHtml = '<div>{point.name}</div>',
     dataLabels = false,
     headerFormat = null,
+    height,
     id,
     innerSize = 'md',
     legend = false,
@@ -79,12 +83,14 @@ const CircleChart = (props: CircleChartProps) => {
       borderColor: roundedBorderColor,
       borderWidth: roundedBorderWidth,
       chartData: formattedChartData,
+      dark,
       title,
       type: style,
       showInLegend: legend,
       dataLabelHtml,
       dataLabels,
       headerFormat,
+      height: height,
       tooltipHtml,
       useHTML: useHtml,
       minPointSize,
